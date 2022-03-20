@@ -17,6 +17,7 @@ services:
       - /tmp:/data
     ports:
       - '8100:8080'
+
   spark-worker-1:
     image: spongres/spark
     environment:
@@ -30,6 +31,7 @@ services:
       - SPARK_SSL_ENABLED=no
     volumes:
       - /tmp:/data
+
   jupyter:
     build:
       context: ./jupyter
@@ -41,3 +43,16 @@ services:
       - '9999:8888'
       - '4040:4040'
       - '4041:4041'
+
+  db:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+
